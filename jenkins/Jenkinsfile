@@ -1,5 +1,5 @@
 podTemplate {
-    node(POD_LABEL) {
+    node(jnlp-agent-docker) {
         stage('Run shell') {
             echo " ============== docker login =================="
                 withCredentials([usernamePassword(credentialsId: 'kgorbarskij_dhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
