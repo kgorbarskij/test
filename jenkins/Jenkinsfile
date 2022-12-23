@@ -1,16 +1,19 @@
 podTemplate(containers: [
     containerTemplate(name: 'dind', image: 'jenkins/jnlp-agent-docker', command: '/bin/bash -c', args: 'cat'),
   ]) {
-    node(POD_LABEL) {
+    deployment(POD_LABEL) {
         stage('docker login') {
                 container('dind') {
-                    withCredentials([usernamePassword(credentialsId: 'kgorbarskij_dhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                        sh """
-                        echo " ============== docker login =================="
-                        docker login -u $USERNAME -p $PASSWORD
+                    stage('login'){
+                        withCredentials([usernamePassword(credentialsId: 'kgorbarskij_dhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                            sh """
+                            echo " ============== docker login =================="
+                            docker login -u $USERNAME -p $PASSWORD
 
-                        """
+                            """
+                        }
                     }
+
                 }    
         }
     }
