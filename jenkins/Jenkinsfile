@@ -37,8 +37,8 @@ pipeline {
         stage("create docker image") {
             steps {
                 echo " ============== start building image =================="
-                dir ('docker/toolbox') {
-                	sh 'docker build -t semaev/toolbox:latest . '
+                dir ('app') {
+                	sh 'docker build -t kgorbarskij/2048:latest . '
                 }
             }
         }
@@ -46,7 +46,7 @@ pipeline {
             steps {
                 echo " ============== start pushing image =================="
                 sh '''
-                docker push semaev/toolbox:latest
+                docker push kgorbarskij/2048:latest
                 '''
             }
         }
