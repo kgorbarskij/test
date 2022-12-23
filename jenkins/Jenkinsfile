@@ -17,14 +17,14 @@ pipeline {
             image: docker:dind
             volumeMounts:
             - name: dockersock
-              mountPath: /var/run
+              mountPath: /var/run/docker.sock
             command:
             - cat
             tty: true
           volumes:
           - name: dockersock
             hostPath:
-              path: /var/run
+              path: /var/run/docker.sock 
         '''
     }
   }
