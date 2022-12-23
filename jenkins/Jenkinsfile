@@ -1,7 +1,7 @@
 podTemplate(containers: [
     containerTemplate(name: 'dind', image: 'jenkins/jnlp-agent-docker', command: '/bin/bash -c', args: 'cat'),
   ]) {
-    deployment(POD_LABEL) {
+    node(POD_LABEL) {
         stage('docker login') {
                 container('dind') {
                     stage('login'){
