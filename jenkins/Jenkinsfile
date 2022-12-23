@@ -4,7 +4,7 @@ podTemplate(containers: [
 
     node(POD_LABEL) {
         stage('Get project') {
-            git 'https://github.com/kgorbarskij/test2.git'
+            git 'github.com/kgorbarskij/test2.git'
             container('dind') {
                 stage('Build project') {
                     sh 'docker build -t kgorbarskij/2048:latest .'
