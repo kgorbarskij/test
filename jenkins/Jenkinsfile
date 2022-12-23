@@ -7,8 +7,8 @@ podTemplate {
 properties([disableConcurrentBuilds()])
 
 pipeline {
-    podTemplate {
-        node(POD_LABEL) {
+    agent { 
+        label 'any'
         }
     }
     options {
