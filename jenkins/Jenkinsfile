@@ -14,7 +14,7 @@ pipeline {
         spec:
           containers:
           - name: dind  
-            image: docker:dind
+            image: jenkins/jnlp-agent-docker
             volumeMounts:
             - name: dockersock
               mountPath: "/var/run/docker.sock"
