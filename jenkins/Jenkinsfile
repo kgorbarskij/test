@@ -3,11 +3,12 @@ podTemplate(containers: [
   ]) {
     node(POD_LABEL) {
         stage('docker login') {
-            echo " ============== docker login =================="
                 container('dind') {
                     withCredentials([usernamePassword(credentialsId: 'kgorbarskij_dhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                         sh """
+                        echo " ============== docker login =================="
                         docker login -u $USERNAME -p $PASSWORD
+
                         """
                     }
                 }    
