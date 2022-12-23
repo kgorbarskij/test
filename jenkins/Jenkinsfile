@@ -26,13 +26,14 @@ pipeline {
             steps {
                 container('dind') {
                     echo " ============== docker build =================="
-                    dir ('app')
-                    withCredentials([usernamePassword(credentialsId: 'kgorbarskij_dhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                        sh """
-                        docker login -u $USERNAME -p $PASSWORD
-                        docker build -t kgorbarskij/2048:latest .
-                        docker push kgorbarskij/2048:latest
-                        """
+                    dir ('app'){
+                        withCredentials([usernamePassword(credentialsId: 'kgorbarskij_dhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                            sh """
+                            docker login -u $USERNAME -p $PASSWORD
+                            docker build -t kgorbarskij/2048:latest .
+                            docker push kgorbarskij/2048:latest
+                            """
+                        }    
                     }
                 }    
             }
