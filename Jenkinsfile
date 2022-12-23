@@ -1,7 +1,7 @@
 podTemplate {
     node(POD_LABEL) {
         stage('Run shell') {
-            sh 'echo  Hello world'
+            sh 'echo  Hello world !!!'
         }
     }
 }
