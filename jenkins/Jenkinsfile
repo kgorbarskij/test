@@ -18,6 +18,10 @@ pipeline {
             command:
             - cat
             tty: true
+          volumes:
+          - name: dockersock
+            hostPath:
+            path: /var/run/docker.sock 
         '''
     }
   }
@@ -30,7 +34,7 @@ pipeline {
                         withCredentials([usernamePassword(credentialsId: 'kgorbarskij_dhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                             sh """
                             docker login -u $USERNAME -p $PASSWORD
-                            docker build -v /var/run/docker.sock:/var/run/docker.sock -t kgorbarskij/2048:latest .
+                            docker build -t kgorbarskij/2048:latest .
                             docker push kgorbarskij/2048:latest
                             """
                         }    
