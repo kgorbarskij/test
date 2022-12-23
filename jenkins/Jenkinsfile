@@ -14,7 +14,7 @@ pipeline {
         spec:
           containers:
           - name: dind  
-            image: rancher/jenkins-plugins-docker
+            image: docker:dind
             volumeMounts:
             - name: dockersock
               mountPath: "/var/run/docker.sock"
