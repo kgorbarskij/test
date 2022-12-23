@@ -1,9 +1,5 @@
-podTemplate {
-    node(POD_LABEL) {
-    }
-}
-
-
+#!groovy
+// Run docker build
 properties([disableConcurrentBuilds()])
 
 pipeline {
