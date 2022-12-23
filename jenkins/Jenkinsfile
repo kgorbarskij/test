@@ -1,6 +1,6 @@
 podTemplate {
     node(POD_LABEL) {
-        stages {
+        
             stage("docker login") {
                 steps {
                     echo " ============== docker login =================="
@@ -27,6 +27,6 @@ podTemplate {
                     '''
                 }
             }
-        }
+    
     }
 }
