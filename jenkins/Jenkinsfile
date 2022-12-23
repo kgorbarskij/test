@@ -1,24 +1,57 @@
-podTemplate(containers: [
-    containerTemplate(name: 'dind', image: 'jenkins/jnlp-agent-docker', command: 'sleep', args: '99d'),
-  ]) {
+#!groovy
+// Run docker build
+properties([disableConcurrentBuilds()])
 
-    node(POD_LABEL) {
-        stage('Get project') {
-            git 'https://github.com/kgorbarskij/test2.git'
-            container('dind') {
-                stage('Build project') {
-                    sh 'docker build -t kgorbarskij/2048:latest .'
-                    
+pipeline {
+    agent { 
+        kubernetes {
+            yaml '''
+                apiVersion: v1
+                kind: Pod
+                metadata:
+                labels:
+                    some-label: some-label-value
+                spec:
+                containers:
+                - name: dind
+                    image: jenkins/jnlp-agent-docker
+                    command:
+                    - cat
+                    tty: true
+                '''
+            }
+        }
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
+        timestamps()
+    }
+    stages {
+        stage("docker login") {
+            steps {
+                container('dind') {
+                    echo " ============== docker login =================="
                     withCredentials([usernamePassword(credentialsId: 'kgorbarskij_dhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                    sh """
-                    docker login -u $USERNAME -p $PASSWORD
-                    """
-                    echo " ============== start pushing image =================="
-                    sh '''
-                    docker push kgorbarskij/2048:latest
-                    '''
-                    }   
+                        sh """
+                        docker login -u $USERNAME -p $PASSWORD
+                        """
+                    }
+                }    
+            }
+        }
+        stage("create docker image") {
+            steps {
+                echo " ============== start building image =================="
+                dir ('docker/toolbox') {
+                	sh 'docker build -t semaev/toolbox:latest . '
                 }
+            }
+        }
+        stage("docker push") {
+            steps {
+                echo " ============== start pushing image =================="
+                sh '''
+                docker push semaev/toolbox:latest
+                '''
             }
         }
     }
