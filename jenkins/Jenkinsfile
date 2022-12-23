@@ -15,6 +15,9 @@ pipeline {
           containers:
           - name: dind  
             image: docker:latest
+            volumeMounts:
+            - name: dockersock
+              mountPath: "/var/run/docker.sock"
             command:
             - cat
             tty: true
