@@ -73,12 +73,12 @@ pipeline {
  
             stage('Deploy') {
               steps {
+                echo "This is a $STAGE_NAME stage " 
                 dir ('k8s/2048'){
                   script {
                     sshagent(credentials: ['ubuntu_ssl']) {
                         sh """#!/bin/bash
                         ls -la
-                        scp deployment.yaml ubuntu@192.168.1.215:/home/ubuntu 
                         ssh -o StrictHostKeyChecking=no ubuntu@192.168.1.215 '
                             kubectl apply -f deployment.yaml
                         '
