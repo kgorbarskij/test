@@ -72,9 +72,9 @@ pipeline {
         // }    
  
             stage("Deploy") {
-              steps {
-                echo "This is a $STAGE_NAME stage "
-                dir ('k8s/2048'){
+              // steps {
+              //   echo "This is a $STAGE_NAME stage "
+              //   dir ('k8s/2048'){
                   withCredentials([usernamePassword(credentialsId: 'ssh_ubuntu', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     def remote = [:]
                     remote.name = 'k8s-m1-30'
@@ -91,8 +91,8 @@ pipeline {
                       sshCommand remote: remote, command: "kubectl apply -f deployment.yml"
                     }
                   }  
-                }  
-              }  
+              //   }  
+              // }  
             }
     }
 }
