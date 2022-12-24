@@ -78,6 +78,7 @@ pipeline {
                 dir ('k8s\2048'){
                   script {
                           sh """#!/bin/bash
+                            pwd
                             ls -la
                             kubectl apply -f deployment.yaml
                           '
