@@ -45,17 +45,16 @@ pipeline {
     }
   }
     stages {
-        stage("docker login") {
+        stage("Docker build") {
             steps {
+                echo "This is a $STAGE_NAME stage " 
                 script {
                     GitCommit = sh(label: 'Short Git Commit', returnStdout: true, script: 'git rev-parse --short=7 HEAD').trim()
                 }
                 container('dind') {
-                    echo " ============== docker build =================="
                     dir ('app'){
                         withCredentials([usernamePassword(credentialsId: 'kgorbarskij_dhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                             sh """
-                            ls -la
                             docker login -u $USERNAME -p $PASSWORD
                             docker build -t kgorbarskij/2048:$GitCommit .
                             docker push kgorbarskij/2048:$GitCommit
@@ -64,6 +63,27 @@ pipeline {
                         }    
                     }
                 }    
+            }
+        }
+        stage('Test') { 
+            steps {
+                echo "This is a $STAGE_NAME stage " 
+                sh (script: '"echo done:)"')
+            }
+        }    
+    
+        stage('Deploy') {
+            steps {
+                echo "This is a $STAGE_NAME stage " 
+                dir ('k8s\2048'){
+                  script {
+                          sh """#!/bin/bash
+                            ls -la
+                            kubectl apply -f deployment.yaml
+                          '
+                          """
+                  }
+                }
             }
         }
     }
