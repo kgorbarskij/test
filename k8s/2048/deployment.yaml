@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: "2048"
-          image: kgorbarskij/2048:f0aea27
+          image: kgorbarskij/2048:c5af913
           ports:
             - name: httpport
               containerPort: 3000
