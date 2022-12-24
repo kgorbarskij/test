@@ -1,5 +1,4 @@
 #!groovy
-// Run docker build
 properties([disableConcurrentBuilds()])
 
 pipeline {
@@ -50,12 +49,16 @@ pipeline {
             steps {
                 container('dind') {
                     echo " ============== docker build =================="
+                    script {
+                    GitCommit = sh(label: 'Short Git Commit', returnStdout: true, script: 'git rev-parse --short=7 HEAD').trim()
+                    }
                     dir ('app'){
                         withCredentials([usernamePassword(credentialsId: 'kgorbarskij_dhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                             sh """
                             ls -la
                             docker login -u $USERNAME -p $PASSWORD
-                            docker build -t kgorbarskij/2048:latest .
+                            docker build -t kgorbarskij/2048:$GitCommit .
+                            docker push kgorbarskij/2048:$GitCommit
                             docker push kgorbarskij/2048:latest
                             """
                         }    
