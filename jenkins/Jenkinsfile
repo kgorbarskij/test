@@ -37,8 +37,8 @@ pipeline {
                         withCredentials([usernamePassword(credentialsId: 'kgorbarskij_dhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                             sh """
                             ls -la
-                            sudo systemctl status docker
-                            sudo services docker status
+                            systemctl status docker
+                            services docker status
                             docker login -u $USERNAME -p $PASSWORD
                             docker build -t kgorbarskij/2048:latest .
                             docker push kgorbarskij/2048:latest
