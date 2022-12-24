@@ -37,9 +37,6 @@ pipeline {
                         withCredentials([usernamePassword(credentialsId: 'kgorbarskij_dhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                             sh """
                             ls -la
-                            apt-get update
-                            apt-get install systemd
-                            systemctl status docker
                             docker login -u $USERNAME -p $PASSWORD
                             docker build -t kgorbarskij/2048:latest .
                             docker push kgorbarskij/2048:latest
