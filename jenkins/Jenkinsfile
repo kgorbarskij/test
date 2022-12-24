@@ -6,25 +6,26 @@ pipeline {
   agent {
     kubernetes {
       yaml '''
-        apiVersion: v1
-        kind: Pod
-        metadata:
-          labels:
-            some-label: some-label-value
-        spec:
-          containers:
-          - name: dind  
-            image: docker:dind
-            volumeMounts:
-            - name: dockersock
-              mountPath: /var/run/docker.sock
-            command:
-            - cat
-            tty: true
-          volumes:
-          - name: dockersock
-            hostPath:
-              path: /var/run/docker.sock 
+        apiVersion: v1 
+        kind: Pod 
+        metadata: 
+            name: dood 
+        spec: 
+            containers: 
+              - name: docker-cmds 
+                image: docker:latest 
+                command: ['docker', 'run', '-p', '80:80', 'httpd:latest'] 
+                resources: 
+                    requests: 
+                        cpu: 10m 
+                        memory: 256Mi 
+                volumeMounts: 
+                  - mountPath: /var/run 
+                    name: docker-sock 
+            volumes: 
+              - name: docker-sock 
+                hostPath: 
+                    path: /var/run  
         '''
     }
   }
