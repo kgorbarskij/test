@@ -59,7 +59,7 @@ pipeline {
                             docker login -u $USERNAME -p $PASSWORD
                             docker build -t kgorbarskij/2048:$GitCommit .
                             docker push kgorbarskij/2048:$GitCommit
-                            docker push kgorbarskij/2048:latest
+                            docker push kgorbarskij/2048
                             """
                         }    
                     }
