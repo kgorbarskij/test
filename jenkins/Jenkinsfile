@@ -76,7 +76,7 @@ pipeline {
                 echo "This is a $STAGE_NAME stage " 
                 dir ('k8s/2048'){
                   sh (script: 'ls -la')
-                  node {
+                  kubernetes {
                     sh("kubectl apply -f deployment.yaml")
                   }  
                 }
