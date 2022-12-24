@@ -47,11 +47,11 @@ pipeline {
     stages {
         stage("docker login") {
             steps {
+                script {
+                    GitCommit = sh(label: 'Short Git Commit', returnStdout: true, script: 'git rev-parse --short=7 HEAD').trim()
+                }
                 container('dind') {
                     echo " ============== docker build =================="
-                    script {
-                    GitCommit = sh(label: 'Short Git Commit', returnStdout: true, script: 'git rev-parse --short=7 HEAD').trim()
-                    }
                     dir ('app'){
                         withCredentials([usernamePassword(credentialsId: 'kgorbarskij_dhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                             sh """
