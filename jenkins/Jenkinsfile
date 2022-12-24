@@ -45,30 +45,30 @@ pipeline {
     }
   }
     stages {
-        stage("Docker build") {
-            steps {
-                echo "This is a $STAGE_NAME stage " 
-                script {
-                    GitCommit = sh(label: 'Short Git Commit', returnStdout: true, script: 'git rev-parse --short=7 HEAD').trim()
-                }
-                container('dind') {
-                    dir ('app'){
-                        withCredentials([usernamePassword(credentialsId: 'kgorbarskij_dhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                            sh """
-                            docker login -u $USERNAME -p $PASSWORD
-                            docker build -t kgorbarskij/2048:$GitCommit .
-                            docker push kgorbarskij/2048:$GitCommit
-                            docker push kgorbarskij/2048
-                            """
-                        }    
-                    }
-                }    
-            }
-        }
+        // stage("Docker build") {
+        //     steps {
+        //         echo "This is a $STAGE_NAME stage " 
+        //         script {
+        //             GitCommit = sh(label: 'Short Git Commit', returnStdout: true, script: 'git rev-parse --short=7 HEAD').trim()
+        //         }
+        //         container('dind') {
+        //             dir ('app'){
+        //                 withCredentials([usernamePassword(credentialsId: 'kgorbarskij_dhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+        //                     sh """
+        //                     docker login -u $USERNAME -p $PASSWORD
+        //                     docker build -t kgorbarskij/2048:$GitCommit .
+        //                     docker push kgorbarskij/2048:$GitCommit
+        //                     docker push kgorbarskij/2048
+        //                     """
+        //                 }    
+        //             }
+        //         }    
+        //     }
+        // }
         stage('Test') { 
             steps {
                 echo "This is a $STAGE_NAME stage " 
-                sh (script: '"echo done:)"')
+                echo "echo done :) "
             }
         }    
     
