@@ -80,7 +80,7 @@ pipeline {
                         sh """#!/bin/bash
                         ls -la
                         pwd
-                        scp -r deployment.yaml ubuntu@192.168.1.215:/home/ubuntu/deployment.yaml 
+                        scp -r /home/jenkins/agent/workspace/Test1/k8s/2048/deployment.yaml ubuntu@192.168.1.215:/home/ubuntu/deployment.yaml 
                         ssh -o StrictHostKeyChecking=no ubuntu@192.168.1.215 '
                             kubectl apply -f deployment.yaml
                         '
