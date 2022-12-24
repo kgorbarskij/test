@@ -86,7 +86,7 @@ pipeline {
                         sshPut remote: remote, from: 'deployment.yml', into: '.'
                     }
 
-                    stage('Deploy') {
+                    stage('Kube Deploy') {
                       sshCommand remote: remote, command: "kubectl apply -f deployment.yml"
                     }
                   }  
