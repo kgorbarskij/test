@@ -4,7 +4,7 @@ metadata:
   name: "2048"
   namespace: "2048"
 spec:
-  replicas: 3
+  replicas: 5
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -29,6 +29,11 @@ spec:
               port: 3000
             initialDelaySeconds: 10
             periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 20
           volumeMounts:
             - name: 2048-data
               mountPath: /tmp
