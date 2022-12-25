@@ -165,7 +165,7 @@ resource "null_resource" "cluster" {
 
 resource "null_resource" "config" {
   provisioner "local-exec" {
-    command = "cp ../../../kubespray/inventory/k8s/artifacts/admin.conf /home/<USER>/.kube/config" # path to user kube config
+    command = "cp ../../../kubespray/inventory/k8s/artifacts/admin.conf ~/.kube/config" # enter path to user kube config
   }
 
   depends_on = [
