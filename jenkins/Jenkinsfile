@@ -1,4 +1,6 @@
 #!groovy
+def github = 'git@github.com:kgorbarskij/test.git'
+
 properties([disableConcurrentBuilds()])
 
 pipeline {
@@ -78,11 +80,10 @@ pipeline {
                   script {
                     sshagent(credentials: ['ubuntu_ssl']) {
                         sh """#!/bin/bash
-                        ls -la
-                        pwd
-                        scp -r /home/jenkins/agent/workspace/Test1/k8s/2048/deployment.yaml ubuntu@192.168.1.215:/home/ubuntu/deployment.yaml 
                         ssh -o StrictHostKeyChecking=no ubuntu@192.168.1.215 '
-                            kubectl apply -f deployment.yaml
+                        git clone $github
+                        cd test/k8s/2048
+                        kubectl apply -f deployment.yaml
                         '
                         """
                     }
