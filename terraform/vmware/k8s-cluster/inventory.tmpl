@@ -1,0 +1,33 @@
+[all]
+%{ for index, vms in vm-names-control  ~}
+${vms} ansible_host=${control-ip[index]}
+%{ endfor ~}
+%{ for index, vms in vm-names-worker ~}
+${vms} ansible_host=${worker-ip[index]}
+%{ endfor ~}
+
+[kube_control_plane]
+%{ for index, vms in vm-names-control  ~}
+${vms}
+%{ endfor ~}
+
+
+[etcd]
+%{ for index, vms in vm-names-control  ~}
+${vms}
+%{ endfor ~}
+
+
+[kube_node]
+%{ for index, vms in vm-names-worker ~}
+${vms}
+%{ endfor ~}
+ 
+
+[calico_rr]
+
+
+[k8s_cluster:children]
+kube_control_plane
+kube_node
+calico_rr
