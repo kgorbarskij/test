@@ -82,11 +82,8 @@ pipeline {
                         sh """#!/bin/bash
                         ssh -o StrictHostKeyChecking=no ubuntu@192.168.1.215 '
                         git clone $github
-                        pwd
-                        ls -la
                         cd test/k8s/2048
-                        pwd
-                        ls -la
+                        sed -i 's/kgorbarskij\/2048:.*/kgorbarskij\/2048:latest/g' deployment.yaml
                         kubectl apply -f deployment.yaml
                         '
                         """
