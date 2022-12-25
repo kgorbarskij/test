@@ -83,7 +83,6 @@ pipeline {
                         sh """#!/bin/bash
                         ssh -o StrictHostKeyChecking=no ubuntu@192.168.1.215 '
                         git clone $github
-                        git pull origin
                         cd test/k8s/2048
                         export tag=$GitCommit
                         ./sed.sh
