@@ -48,25 +48,25 @@ pipeline {
     }
   }
     stages {
-        stage("Docker build") {
-            steps {
-                echo "This is a $STAGE_NAME stage " 
-                script {
-                    GitCommit = sh(label: 'Short Git Commit', returnStdout: true, script: 'git rev-parse --short=7 HEAD').trim()
-                }
-                container('dind') {
-                    dir ('apps/2048'){
-                        withCredentials([usernamePassword(credentialsId: 'kgorbarskij_dhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                            sh """
-                            docker login -u $USERNAME -p $PASSWORD
-                            docker build -t kgorbarskij/2048:$GitCommit .
-                            docker push kgorbarskij/2048:$GitCommit
-                            """
-                        }    
-                    }
-                }    
-            }
-        }
+        // stage("Docker build") {
+        //     steps {
+        //         echo "This is a $STAGE_NAME stage " 
+        //         script {
+        //             GitCommit = sh(label: 'Short Git Commit', returnStdout: true, script: 'git rev-parse --short=7 HEAD').trim()
+        //         }
+        //         container('dind') {
+        //             dir ('apps/2048'){
+        //                 withCredentials([usernamePassword(credentialsId: 'kgorbarskij_dhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+        //                     sh """
+        //                     docker login -u $USERNAME -p $PASSWORD
+        //                     docker build -t kgorbarskij/2048:$GitCommit .
+        //                     docker push kgorbarskij/2048:$GitCommit
+        //                     """
+        //                 }    
+        //             }
+        //         }    
+        //     }
+        // }
         stage('Test') { 
             steps {
                 echo "This is a $STAGE_NAME stage " 
@@ -83,6 +83,7 @@ pipeline {
                         sh """#!/bin/bash
                         ssh -o StrictHostKeyChecking=no ubuntu@192.168.1.215 '
                         git clone $github
+                        git pull origin
                         cd test/k8s/2048
                         export tag=$GitCommit
                         ./sed.sh
