@@ -91,7 +91,7 @@ controller:
   # The Protocol can be overwritten by specifying `controller.jenkinsUrlProtocol`.
   # jenkinsUrlProtocol: "https"
   # If you are not using the provided ingress you can specify `controller.jenkinsUrl` to change the url definition.
-  # jenkinsUrl: "http://jenkins.brs.by/"
+  # jenkinsUrl: "http://jenkins.com/"
   # If you set this prefix and use ingress controller then you might want to set the ingress path below
   # jenkinsUriPrefix: "/jenkins"
   # Enable pod security context (must be `true` if podSecurityContextOverride, runAsUser or fsGroup are set)
@@ -464,7 +464,7 @@ controller:
     # Set this path to jenkinsUriPrefix above or use annotations to rewrite path
     path: "/"
     # configures the hostname e.g. jenkins.example.com
-    hostName: jenkins.brs.by
+    hostName: hostname #enterhostname
     tls:
     # - secretName: jenkins.cluster.local
     #   hosts:
