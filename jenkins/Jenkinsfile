@@ -1,5 +1,5 @@
 #!groovy
-def github = 'git@github.com:kgorbarskij/test.git'
+def github = 'https://github.com/kgorbarskij/test.git'
 
 properties([disableConcurrentBuilds()])
 
