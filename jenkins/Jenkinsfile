@@ -1,5 +1,6 @@
 #!groovy
 def github = 'https://github.com/kgorbarskij/test.git'
+def GitCommit
 
 properties([disableConcurrentBuilds()])
 
@@ -47,25 +48,25 @@ pipeline {
     }
   }
     stages {
-        stage("Docker build") {
-            steps {
-                echo "This is a $STAGE_NAME stage " 
-                script {
-                    GitCommit = sh(label: 'Short Git Commit', returnStdout: true, script: 'git rev-parse --short=7 HEAD').trim()
-                }
-                container('dind') {
-                    dir ('apps/2048'){
-                        withCredentials([usernamePassword(credentialsId: 'kgorbarskij_dhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                            sh """
-                            docker login -u $USERNAME -p $PASSWORD
-                            docker build -t kgorbarskij/2048:$GitCommit .
-                            docker push kgorbarskij/2048:$GitCommit
-                            """
-                        }    
-                    }
-                }    
-            }
-        }
+        // stage("Docker build") {
+        //     steps {
+        //         echo "This is a $STAGE_NAME stage " 
+        //         script {
+        //             GitCommit = sh(label: 'Short Git Commit', returnStdout: true, script: 'git rev-parse --short=7 HEAD').trim()
+        //         }
+        //         container('dind') {
+        //             dir ('apps/2048'){
+        //                 withCredentials([usernamePassword(credentialsId: 'kgorbarskij_dhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+        //                     sh """
+        //                     docker login -u $USERNAME -p $PASSWORD
+        //                     docker build -t kgorbarskij/2048:$GitCommit .
+        //                     docker push kgorbarskij/2048:$GitCommit
+        //                     """
+        //                 }    
+        //             }
+        //         }    
+        //     }
+        // }
         stage('Test') { 
             steps {
                 echo "This is a $STAGE_NAME stage " 
@@ -73,25 +74,45 @@ pipeline {
             }
         }    
  
-            stage('Deploy') {
-              steps {
-                echo "This is a $STAGE_NAME stage " 
-                dir ('k8s/2048'){
-                  script {
-                    sshagent(credentials: ['ubuntu_ssl']) {
-                        sh """#!/bin/bash
-                        ssh -o StrictHostKeyChecking=no ubuntu@192.168.1.215 '
-                        git clone $github
-                        cd test/k8s/2048
-                        export tag=$GitCommit
-                        ./sed.sh
-                        kubectl apply -f deployment.yaml
-                        '
-                        """
-                    }
-                  }
-                }  
-              }
+        // stage('Deploy') {
+        //     steps {
+        //         echo "This is a $STAGE_NAME stage " 
+        //         dir ('k8s/2048'){
+        //             script {
+        //                 sshagent(credentials: ['ubuntu_ssl']) {
+        //                 sh """#!/bin/bash
+        //                 ssh -o StrictHostKeyChecking=no ubuntu@192.168.1.215 '
+        //                 git clone $github
+        //                 cd test/k8s/2048
+        //                 export tag=$GitCommit
+        //                 ./sed.sh
+        //                 kubectl apply -f deployment.yaml
+        //                 '
+        //                 """
+        //             }
+        //           }
+        //        }  
+        //     }
+        // }
+    }
+
+    post {
+        success {
+            echo 'Post success..'
+            withCredentials([string(credentialsId: 'token_jenkins_bot', variable: 'token_jenkins_bot'), string(credentialsId: 'cahtid_brs', variable: 'cahtid_brs')]) {
+            sh  ("""
+            curl -s -X POST https://api.telegram.org/bot${token_jenkins_bot}/sendMessage -d chat_id=${cahtid_test} -d parse_mode=markdown -d text='*${env.JOB_NAME}* : *Branch*: ${env.GIT_BRANCH} *Build* : OK *Published* = YES'
+            """)
+            cleanWs()
             }
+        }
+        failure {
+            withCredentials([string(credentialsId: 'token_jenkins_bot', variable: 'token_jenkins_bot'), string(credentialsId: 'cahtid_brs', variable: 'cahtid_brs')]) {
+            sh  ("""
+                curl -s -X POST https://api.telegram.org/bot${TOKEN}/sendMessage -d chat_id=${CHAT_ID} -d parse_mode=markdown -d text='*${env.JOB_NAME}* : POC  *Branch*: ${env.GIT_BRANCH} *Build* : `not OK` *Published* = `no`'
+            """)
+            cleanWs()
+            }
+        }
     }
 }
