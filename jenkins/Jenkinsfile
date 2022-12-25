@@ -84,7 +84,9 @@ pipeline {
                         ssh -o StrictHostKeyChecking=no ubuntu@192.168.1.215 '
                         git clone $github
                         cd test
-                        git pull origin
+                        git fetch
+                        git reset --hard HEAD
+                        git merge origin
                         cd k8s/2048
                         export tag=$GitCommit
                         chmod +x sed.sh

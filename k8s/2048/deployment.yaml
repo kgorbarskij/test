@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: "2048"
-          image: kgorbarskij/2048:bf10553
+          image: kgorbarskij/2048:latest
           ports:
             - name: httpport
               containerPort: 3000
@@ -29,15 +29,6 @@ spec:
               port: 80
             initialDelaySeconds: 10
             periodSeconds: 10
-          livenessProbe:
-            httpGet:
-              path: /
-              port: listener
-              httpHeaders:
-                - name: Custom-Header
-                  value: Awesome
-            initialDelaySeconds: 10
-            periodSeconds: 5
           volumeMounts:
             - name: 2048-data
               mountPath: /tmp
