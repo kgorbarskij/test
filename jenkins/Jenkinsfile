@@ -96,23 +96,23 @@ pipeline {
         }
     }
 
-    post {
-        success {
-            echo 'Post success..'
-            withCredentials([string(credentialsId: 'token_jenkins_bot', variable: 'token_jenkins_bot'), string(credentialsId: 'cahtid_brs', variable: 'cahtid_brs')]) {
-            sh  ("""
-            curl -s -X POST https://api.telegram.org/bot${token_jenkins_bot}/sendMessage -d chat_id=${cahtid_brs} -d parse_mode=markdown -d text='*${env.JOB_NAME}* : *Branch*: ${env.GIT_BRANCH} *Build* : OK *Published* = YES'
-            """)
-            cleanWs()
-            }
-        }
-        failure {
-            withCredentials([string(credentialsId: 'token_jenkins_bot', variable: 'token_jenkins_bot'), string(credentialsId: 'cahtid_brs', variable: 'cahtid_brs')]) {
-            sh  ("""
-                curl -s -X POST https://api.telegram.org/bot${token_jenkins_bot}/sendMessage -d chat_id=${cahtid_brs} -d parse_mode=markdown -d text='*${env.JOB_NAME}* : POC  *Branch*: ${env.GIT_BRANCH} *Build* : `not OK` *Published* = `no`'
-            """)
-            cleanWs()
-            }
-        }
-    }
+    // post {
+    //     success {
+    //         echo 'Post success..'
+    //         withCredentials([string(credentialsId: 'token_jenkins_bot', variable: 'token_jenkins_bot'), string(credentialsId: 'cahtid_brs', variable: 'cahtid_brs')]) {
+    //         sh  ("""
+    //         curl -s -X POST https://api.telegram.org/bot${token_jenkins_bot}/sendMessage -d chat_id=${cahtid_brs} -d parse_mode=markdown -d text='*${env.JOB_NAME}* : *Branch*: ${env.GIT_BRANCH} *Build* : OK *Published* = YES'
+    //         """)
+    //         cleanWs()
+    //         }
+    //     }
+    //     failure {
+    //         withCredentials([string(credentialsId: 'token_jenkins_bot', variable: 'token_jenkins_bot'), string(credentialsId: 'cahtid_brs', variable: 'cahtid_brs')]) {
+    //         sh  ("""
+    //             curl -s -X POST https://api.telegram.org/bot${token_jenkins_bot}/sendMessage -d chat_id=${cahtid_brs} -d parse_mode=markdown -d text='*${env.JOB_NAME}* : POC  *Branch*: ${env.GIT_BRANCH} *Build* : `not OK` *Published* = `no`'
+    //         """)
+    //         cleanWs()
+    //         }
+    //     }
+    // }
 }

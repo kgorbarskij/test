@@ -4,7 +4,7 @@ metadata:
   name: "2048"
   namespace: "2048"
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: 2048-app
