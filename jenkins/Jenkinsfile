@@ -54,7 +54,7 @@ pipeline {
                     GitCommit = sh(label: 'Short Git Commit', returnStdout: true, script: 'git rev-parse --short=7 HEAD').trim()
                 }
                 container('dind') {
-                    dir ('app'){
+                    dir ('apps/2048'){
                         withCredentials([usernamePassword(credentialsId: 'kgorbarskij_dhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                             sh """
                             docker login -u $USERNAME -p $PASSWORD
