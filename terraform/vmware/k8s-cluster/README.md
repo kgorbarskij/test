@@ -1,4 +1,4 @@
-## Настройка инфраструктуры
+## Infrastructure configuration
 
 - By default terraform initializes 4 virtual hosts based on ubuntut 20.04
   1 host is used for the control plane and 3 hosts for the data plane in kubernetes. If necessary, the number can be changed by configuring the control-count and worker-count variables.
