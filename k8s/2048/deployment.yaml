@@ -4,7 +4,6 @@ metadata:
   name: "2048"
   namespace: "2048"
 spec:
-  replicas: 3
   strategy:
     type: RollingUpdate
     rollingUpdate:
