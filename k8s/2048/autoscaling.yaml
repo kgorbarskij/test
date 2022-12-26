@@ -2,6 +2,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: 2048-autoscaling
+  namespace: "2048"
 spec:
   scaleTargetRef:
     apiVersion: apps/v2
