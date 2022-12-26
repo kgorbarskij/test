@@ -5,6 +5,7 @@ The repository contains a number of methods and templates used to fully initiali
 ## Dependencies
 
 - For initialization it is necessary to install [Terraform](https://developer.hashicorp.com/terraform/downloads) depending on the host operating system
+- Auto setup requires [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
 - If fine-tuning is required, you will need [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/)
 
 ## Description
