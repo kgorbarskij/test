@@ -1,0 +1,12 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: 2048-qnap-pvc
+  namespace: "2048"
+spec:
+  storageClassName: qnap-data
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi

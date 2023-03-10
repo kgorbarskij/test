@@ -39,4 +39,4 @@ spec:
       volumes:
         - name: 2048-data
           persistentVolumeClaim:
-            claimName: 2048-pv-claim
+            claimName: 2048-qnap-pvc
